@@ -1,0 +1,86 @@
+apply plugin: 'nebula.provided-base'
+apply plugin: 'org.talend.sdk.component'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.compilerArgs << '-parameters'
+    options.fork = true
+}
+
+
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.netflix.nebula:gradle-extra-configurations-plugin:3.0.3"
+    classpath "org.talend.sdk.component:gradle-talend-component:1.33.0"
+
+  }
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+group = 'com.emiafe.talend'
+description = 'A generated component project'
+version = '0.0.0.6.2-SNAPSHOT'
+
+
+jar {
+  baseName = 'talend-smb'
+  version = '0.0.0.6.2-SNAPSHOT'
+}
+
+test {
+  testLogging.showStandardStreams = true
+}
+
+sourceSets {
+  main {
+    java {
+    }
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile group: 'org.talend.sdk.component', name: 'component-api', version: '1.33.0'
+  compile group: 'com.hierynomus', name: 'smbj', version: '0.6.0'
+  compile group: 'com.google.code.gson', name: 'gson', version: '2.8.7'
+  testImplementation group: 'org.talend.sdk.component', name: 'component-runtime-junit', version: '1.33.0'
+  testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+  repositories {
+    mavenLocal()
+  }
+}
+
+
+// optional customization
+talendComponentKit {
+  // deploy-in-studio
+  //studioHome =  new File("C:\\Talend\\TOS_DI-Win32-20200219_1130-V7.3.1\\")
+}
+
+
